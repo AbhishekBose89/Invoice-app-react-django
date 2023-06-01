@@ -13,8 +13,8 @@ export default function ItemList({ invoice, items }) {
         </thead>
         <tbody>
           {items &&
-            items.map((i) => (
-              <tr>
+            items.map((i,index) => (
+              <tr key={index}>
                 <th>{invoice.invoice_id}</th>
                 <td>{i.desc}</td>
                 <th>{i.rate}</th>
