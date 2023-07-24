@@ -24,7 +24,7 @@ const Login = () => {
 			.post("http://127.0.0.1:8000/api/users/login/", values)
 			.then(
 				(response) => {
-					localStorage.setItem("uuid", response.data.token);
+					localStorage.setItem("token", response.data.token);
 					console.log("response", response);
 					setResponseData({
 						responseText: "Login Successful",

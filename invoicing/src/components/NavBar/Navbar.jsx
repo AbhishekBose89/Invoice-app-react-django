@@ -1,15 +1,14 @@
 import "./Navbar.css";
 
+import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
-import { NavLink,useNavigate } from "react-router-dom";
 
 export default function Navbar() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const nav = useNavigate();
 	useEffect(() => {
-		let uuid = localStorage.getItem("token");
-		if (uuid) {
+		let token = localStorage.getItem("token");
+		if (token) {
 			setLoggedIn(true);
 		} else {
 			setLoggedIn(false);
@@ -17,7 +16,7 @@ export default function Navbar() {
 	}, [loggedIn]);
 
 	const logoutHandler = () => {
-		localStorage.removeItem("uuid");
+		localStorage.removeItem("token");
 		nav("/login", true);
 	};
 	return (

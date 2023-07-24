@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../NavBar/Navbar";
 import "./InvoiceForm.css";
+
+import Navbar from "../NavBar/Navbar";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function InvoiceForm() {
 	const [newInvoice, setNewInvoice] = useState({});
@@ -9,10 +10,12 @@ export default function InvoiceForm() {
 
 	function handleSubmit() {
 		newInvoice.items = [];
+		let token = localStorage.getItem("token");
 		fetch("http://127.0.0.1:8000/api/invoices/new/", {
 			method: "POST",
 			body: JSON.stringify(newInvoice),
 			headers: {
+				Authorization: `Bearer ${token}`,
 				"Content-Type": "application/json",
 			},
 		}).then((res) => navigate("/"));

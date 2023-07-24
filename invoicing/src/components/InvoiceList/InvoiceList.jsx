@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react";
+
 import Navbar from "../NavBar/Navbar";
 
 export default function InvoiceList() {
 	const [invoices, setInvoices] = useState([]);
 	useEffect(() => {
-		fetch("http://127.0.0.1:8000/api/invoices/")
+		let token = localStorage.getItem("token");
+		fetch("http://127.0.0.1:8000/api/invoices/", {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+		})
 			.then((res) => res.json())
 			.then((results) => {
 				setInvoices(results);
@@ -41,7 +49,10 @@ export default function InvoiceList() {
 							<td>{new Date(i.date).toDateString()}</td>
 							<td>{i.totalAmount}</td>
 							<td>
-								<a href={i.invoice_id} className="btn btn-warning text-center btn-block">
+								<a
+									href={i.invoice_id}
+									className="btn btn-warning text-center btn-block"
+								>
 									Items
 								</a>
 							</td>

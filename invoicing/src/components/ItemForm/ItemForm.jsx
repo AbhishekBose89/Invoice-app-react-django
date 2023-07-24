@@ -1,17 +1,21 @@
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Navbar from "../NavBar/Navbar";
 import "./ItemForm.css";
+
+import { useNavigate, useParams } from "react-router-dom";
+
+import Navbar from "../NavBar/Navbar";
+import { useState } from "react";
 
 export default function ItemForm() {
 	const [newItem, setNewItem] = useState({});
 	const navigate = useNavigate();
 	const { id } = useParams();
 	function handleSubmit() {
+		let token = localStorage.getItem("token");
 		fetch("http://127.0.0.1:8000/api/invoices/" + id.toString() + "/items/", {
 			method: "POST",
 			body: JSON.stringify(newItem),
 			headers: {
+				Authorization: `Bearer ${token}`,
 				"Content-Type": "application/json",
 			},
 		}).then((res) => navigate("/" + id));
