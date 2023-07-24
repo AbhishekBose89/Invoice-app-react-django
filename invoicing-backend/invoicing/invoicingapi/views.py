@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+
 # from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import *
 
@@ -56,7 +57,9 @@ class GetAllInvoices(APIView):
     def get(self, request):
         invoices = Invoice.objects.all()
         serialized_invoice = InvoiceSerializer(invoices, many=True)
-        return JsonResponse(serialized_invoice.data, safe=False)
+        return JsonResponse(
+            serialized_invoice.data, safe=False, status=status.HTTP_200_OK
+        )
 
 
 class AddInvoice(APIView):
@@ -65,11 +68,19 @@ class AddInvoice(APIView):
     def post(self, request):
         invoice_data = json.loads(request.body)
         invoice_serializer = InvoiceSerializer(data=invoice_data)
-        if invoice_serializer.is_valid():
-            Invoice.objects.create(**invoice_data)
-            return JsonResponse(invoice_serializer.data, safe=False, status=201)
-        else:
-            return HttpResponseBadRequest()
+        try:
+            if invoice_serializer.is_valid():
+                Invoice.objects.create(**invoice_data)
+                return JsonResponse(
+                    invoice_serializer.data, safe=False, status=status.HTTP_201_CREATED
+                )
+            return JsonResponse(
+                invoice_serializer.errors,
+                safe=False,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception as e:
+            return HttpResponseBadRequest(str(e))
 
 
 class GetSingleInvoice(APIView):
@@ -79,8 +90,12 @@ class GetSingleInvoice(APIView):
         invoice = Invoice.objects.filter(invoice_id=invoice_id).first()
         if invoice:
             invoice_serializer = InvoiceSerializer(invoice)
-            return JsonResponse(invoice_serializer.data, safe=False)
-        return JsonResponse({"message": "Invoice not found"}, status=404)
+            return JsonResponse(
+                invoice_serializer.data, safe=False, status=status.HTTP_200_OK
+            )
+        return JsonResponse(
+            {"message": "Invoice not found"}, status=status.HTTP_404_NOT_FOUND
+        )
 
 
 class InvoiceAddItem(APIView):
@@ -88,10 +103,19 @@ class InvoiceAddItem(APIView):
 
     def post(self, request, invoice_id):
         invoice = Invoice.objects.filter(invoice_id=invoice_id).first()
-        if invoice:
-            item = json.loads(request.body)
-            serialized_item = ItemSerializer(data=item)
-            if serialized_item.is_valid():
-                Item.objects.create(**item)
-                return JsonResponse(serialized_item.data, status=200)
-            return HttpResponseBadRequest()
+        try:
+            if invoice:
+                item = json.loads(request.body)
+                serialized_item = ItemSerializer(data=item)
+                if serialized_item.is_valid():
+                    Item.objects.create(**item)
+                    return JsonResponse(
+                        serialized_item.data, status=status.HTTP_201_CREATED
+                    )
+                return JsonResponse(
+                    serialized_item.errors,
+                    safe=False,
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except Exception as e:
+            return HttpResponseBadRequest(str(e))
