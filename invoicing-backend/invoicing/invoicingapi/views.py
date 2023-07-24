@@ -4,7 +4,8 @@ from django.views import View
 import json
 from .serializers import InvoiceSerializer, UserSerializer, ItemSerializer
 from django.http import JsonResponse, HttpResponseBadRequest
-from .data import users, invoices
+from .data import users, invoices 
+
 
 # Create your views here.
 
