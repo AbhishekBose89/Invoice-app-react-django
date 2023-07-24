@@ -39,7 +39,7 @@ class User(AbstractBaseUser):
 class Invoice(models.Model):
     invoice_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="invoices")
-    date = models.DateTimeField()
+    date = models.DateField()
     client_name = models.CharField(max_length=200)
 
 

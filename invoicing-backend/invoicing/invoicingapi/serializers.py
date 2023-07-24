@@ -14,7 +14,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Invoice
-        fields = "__all__"
+        fields = ["Client_name", "date"]
 
 
 class UserSerializer(serializers.ModelSerializer):
