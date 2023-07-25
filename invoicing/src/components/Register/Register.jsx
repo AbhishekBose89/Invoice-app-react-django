@@ -17,6 +17,7 @@ const Register = () => {
 
 	const initialValues = {
 		name: "",
+		username: "",
 		email: "",
 		password: "",
 	};
@@ -45,6 +46,7 @@ const Register = () => {
 
 	const validationSchema = Yup.object({
 		name: Yup.string().required("Name is required"),
+		username: Yup.string().required("username is required"),
 		email: Yup.string()
 			.required("Email is required")
 			.email("Please enter a valid email"),
@@ -99,6 +101,30 @@ const Register = () => {
 								/>
 								{formik.touched.name && formik.errors.name ? (
 									<small className="text-danger">{formik.errors.name}</small>
+								) : null}
+							</div>
+							<div className="mb-3 form-group">
+								<label htmlFor="username" className="text-left">
+									Username
+								</label>
+								<input
+									type="text"
+									className={
+										formik.touched.username && formik.errors.username
+											? "form-control is-invalid"
+											: "form-control"
+									}
+									id="username"
+									name="username"
+									placeholder="Enter Your Username"
+									value={formik.values.username}
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+								/>
+								{formik.touched.username && formik.errors.username ? (
+									<small className="text-danger">
+										{formik.errors.username}
+									</small>
 								) : null}
 							</div>
 							<div className="mb-3 form-group">

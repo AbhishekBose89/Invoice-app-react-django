@@ -16,7 +16,7 @@ const Login = () => {
 	const nav = useNavigate();
 
 	const initialValues = {
-		email: "",
+		username: "",
 		password: "",
 	};
 	const onSubmit = (values) => {
@@ -44,9 +44,7 @@ const Login = () => {
 	};
 
 	const validationSchema = Yup.object({
-		email: Yup.string()
-			.required("Email is required")
-			.email("please enter a valid email"),
+		username: Yup.string().required("Username is required"),
 		password: Yup.string()
 			.required("Password is required")
 			.min(6, "password should have at least 6 character")
@@ -78,23 +76,25 @@ const Login = () => {
 						<hr />
 						<form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
 							<div className="mb-3 form-group">
-								<label htmlFor="email">Email </label>
+								<label htmlFor="username">Username </label>
 								<input
 									type="text"
 									className={
-										formik.touched.email && formik.errors.email
+										formik.touched.username && formik.errors.username
 											? "form-control is-invalid"
 											: "form-control"
 									}
-									id="email"
-									name="email"
-									placeholder="Enter Your Email"
-									value={formik.values.email}
+									id="username"
+									name="username"
+									placeholder="Enter Your Username"
+									value={formik.values.username}
 									onChange={formik.handleChange}
 									onBlur={formik.handleBlur}
 								/>
-								{formik.touched.email && formik.errors.email ? (
-									<small className="text-danger">{formik.errors.email}</small>
+								{formik.touched.username && formik.errors.username ? (
+									<small className="text-danger">
+										{formik.errors.username}
+									</small>
 								) : null}
 							</div>
 							<div className="mb-3 form-group">
