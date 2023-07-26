@@ -15,14 +15,16 @@ export default function InvoiceList() {
 		})
 			.then((res) => res.json())
 			.then((results) => {
+				console.log(results);
 				setInvoices(results);
-				results.forEach((element) => {
+				results?.forEach((element) => {
 					element.totalAmount = element.items.reduce(
 						(total, item) =>
 							Number(total) + Number(item.rate) * Number(item.quantity),
 						0
 					);
 				});
+				
 				console.log(invoices);
 			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,7 +44,7 @@ export default function InvoiceList() {
 					</tr>
 				</thead>
 				<tbody>
-					{invoices.map((i, index) => (
+					{invoices?.map((i, index) => (
 						<tr key={index}>
 							<th>{i.invoice_id}</th>
 							<td>{i.client_name}</td>

@@ -32,7 +32,9 @@ class Register(APIView):
             return JsonResponse(
                 {"msg": "Registration Failed"}, status=status.HTTP_400_BAD_REQUEST
             )
-        return JsonResponse({"msg": "user is already exist"}, status=status.HTTP_200_OK)
+        return JsonResponse(
+            {"msg": "user is already exist"}, status=status.HTTP_208_ALREADY_REPORTED
+        )
 
 
 class Login(APIView):
@@ -55,7 +57,7 @@ class GetAllInvoices(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        invoices = Invoice.objects.all()
+        invoices = Invoice.objects.filter(user=request.user.id)
         serialized_invoice = InvoiceSerializer(invoices, many=True)
         return JsonResponse(
             serialized_invoice.data, safe=False, status=status.HTTP_200_OK
@@ -63,7 +65,6 @@ class GetAllInvoices(APIView):
 
 
 class AddInvoice(APIView):
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -90,7 +91,9 @@ class GetSingleInvoice(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, invoice_id):
-        invoice = Invoice.objects.filter(invoice_id=invoice_id).first()
+        invoice = Invoice.objects.filter(
+            invoice_id=invoice_id, user=request.user.id
+        ).first()
         if invoice:
             invoice_serializer = InvoiceSerializer(invoice)
             return JsonResponse(

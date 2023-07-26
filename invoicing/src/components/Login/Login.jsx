@@ -38,6 +38,7 @@ const Login = () => {
 						responseText: "Login Failed, Please provide valid credentials",
 						responseClass: "alert alert-danger",
 					});
+					nav("/login",true)
 				}
 			)
 			.catch((error) => console.log(error));

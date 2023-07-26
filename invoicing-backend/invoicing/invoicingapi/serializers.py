@@ -10,6 +10,8 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class InvoiceSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True, read_only=True)
+
     class Meta:
         model = Invoice
         fields = "__all__"
@@ -20,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["name", "username", "email", "password"]
 
     def create(self, validated_data):
         user = User.objects.create_user(
