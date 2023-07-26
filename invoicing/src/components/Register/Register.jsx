@@ -1,11 +1,10 @@
 import * as Yup from "yup";
 
-import { NavLink } from "react-router-dom";
-import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+
 import axios from "axios";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 const Register = () => {
 	const [responseData, setResponseData] = useState({

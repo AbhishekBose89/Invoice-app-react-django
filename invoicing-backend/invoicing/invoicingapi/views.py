@@ -11,7 +11,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 
-# from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import *
 
 
@@ -63,14 +63,17 @@ class GetAllInvoices(APIView):
 
 
 class AddInvoice(APIView):
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         invoice_data = json.loads(request.body)
+        invoice_data["user"] = request.user.id
         invoice_serializer = InvoiceSerializer(data=invoice_data)
         try:
             if invoice_serializer.is_valid():
-                Invoice.objects.create(**invoice_data)
+                # Invoice.objects.create(**invoice_data)
+                invoice_serializer.save()
                 return JsonResponse(
                     invoice_serializer.data, safe=False, status=status.HTTP_201_CREATED
                 )
@@ -106,9 +109,11 @@ class InvoiceAddItem(APIView):
         try:
             if invoice:
                 item = json.loads(request.body)
+                item["invoice"] = invoice_id
                 serialized_item = ItemSerializer(data=item)
                 if serialized_item.is_valid():
-                    Item.objects.create(**item)
+                    # Item.objects.create(**item)
+                    serialized_item.save()
                     return JsonResponse(
                         serialized_item.data, status=status.HTTP_201_CREATED
                     )
