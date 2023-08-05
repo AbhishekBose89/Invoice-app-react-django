@@ -1,6 +1,6 @@
 # Use the official Python base image
 
-FROM python:3.9
+FROM python:3.11
 
 
 # Set environment variables
@@ -38,4 +38,4 @@ EXPOSE 8000
 
 # Command to start the Django development server
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"] 
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
