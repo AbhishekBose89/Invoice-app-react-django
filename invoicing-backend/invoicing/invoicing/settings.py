@@ -85,6 +85,7 @@ DATABASES = {
     "default": {
         "ENGINE": "djongo",
         "NAME": "invoice",
+        "CLIENT": {"host": "192.168.29.215", "port": 27017},
     }
 }
 

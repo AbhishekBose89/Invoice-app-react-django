@@ -3,5 +3,12 @@
 		"editor.defaultFormatter": "ms-python.black-formatter"
 	},
 	"python.formatting.provider": "none",
-	"cSpell.words": ["corsheaders", "invoicingapi"]
+	"cSpell.words": [
+		"corsheaders",
+		"djongo",
+		"invoicingapi",
+		"mwbl",
+		"simplejwt",
+		"wleq"
+	]
 }
